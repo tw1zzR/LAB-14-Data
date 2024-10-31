@@ -1,0 +1,27 @@
+[
+    {
+        "site": "https://en.wikipedia.org/wiki/CNN",
+        "word": "News",
+        "count": 1,
+        "wordlist": [
+            "News"
+        ]
+    },
+    {
+        "site": "https://en.wikipedia.org/wiki/BBC",
+        "word": "News",
+        "count": 4,
+        "wordlist": [
+            "News",
+            "News",
+            "News",
+            "News"
+        ]
+    },
+    {
+        "site": "https://en.wikipedia.org/wiki/Forbes",
+        "word": "News",
+        "count": 0,
+        "wordlist": []
+    }
+]
