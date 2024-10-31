@@ -1,29 +1,28 @@
-import requests; from bs4 import BeautifulSoup
+import requests, json; from bs4 import BeautifulSoup
 
-r = requests.get("https://en.wikipedia.org/wiki/CNN")
-r1 = requests.get("https://en.wikipedia.org/wiki/BBC")
-r2 = requests.get("https://en.wikipedia.org/wiki/Forbes")
+def count_word(url,word):
+    r = requests.get(url)
+    if r.status_code == 200:
+        wbs = BeautifulSoup(r.text, "html.parser")
+        wordlist = wbs.find_all(string=word)
+        word_count = len(wordlist)
+        print(f"At site '{r.url[30:]}' Word '{word}' was found {word_count} times: {wordlist}")
+        return {
+            "site": r.url,
+            "word": word,
+            "count": word_count,
+            "wordlist": wordlist
+        }
 
-if r.status_code == 200:
-    word = "News"
-    wbs = BeautifulSoup(r.text, "html.parser")
-    wordlist1 = wbs.find_all(string=word)
-    word_count = sum(len(item.split()) for item in wordlist1)
-    print(f"At site '{r.url[30:]}' Word '{word}' was find {word_count} times: {wordlist1}")
+urls = [
+    "https://en.wikipedia.org/wiki/CNN",
+    "https://en.wikipedia.org/wiki/BBC",
+    "https://en.wikipedia.org/wiki/Forbes"
+]
 
-if r1.status_code == 200:
-    word = "News"
-    wbs = BeautifulSoup(r1.text, "html.parser")
-    wordlist = wbs.find_all(string=word)
-    word_count1 = sum(len(item.split()) for item in wordlist)
-    print(f"At site '{r1.url[30:]}' Word '{word}' was find {word_count1} times: {wordlist}")
+results = [count_word(url, "News") for url in urls]
 
-if r2.status_code == 200:
-    word = "News"
-    wbs = BeautifulSoup(r2.text, "html.parser")
-    wordlist = wbs.find_all(string=word)
-    word_count2 = sum(len(item.split()) for item in wordlist)
-    print(f"At site '{r2.url[30:]}' Word '{word}' was find {word_count2} times: {wordlist}")
+with open("result.json", "w", encoding="utf-8") as file:
+    json.dump(results, file, ensure_ascii=False, indent=4)
 
-sum = word_count + word_count1 + word_count2
-print(f"The total sum of words: {sum}")
+print("\nResults have been written to 'result.json'")
